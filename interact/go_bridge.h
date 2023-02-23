@@ -1,9 +1,7 @@
-#ifndef SIMPLE_LOGIC_USER_H_
-#define SIMPLE_LOGIC_USER_H_
+#pragma once
 
-#include <string>
-#include "define.h"
-#include "interface.h"
+
+#include "go_export.h"
 
 
 class CGameUser: public ISimpleUser{
@@ -26,5 +24,3 @@ protected:
     unsigned short seat_ = INVALID_SEAT;
     ISimpleTable* table_;
 };
-
-#endif

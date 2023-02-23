@@ -2,18 +2,17 @@ package main
 
 /*
 #cgo CFLAGS: -I${SRCDIR}/../interact
-#cgo LDFLAGS: -Wl,-rpath,${SRCDIR}/../interact
-#cgo LDFLAGS: -L${SRCDIR}/../interact
-#cgo LDFLAGS: -ldl
+#cgo LDFLAGS: -Wl,-rpath,${SRCDIR}
+#cgo LDFLAGS: -L${SRCDIR} -l:libcpp_loigc.so
 
-#include <dlfcn.h>
-#include <stdbool.h>
-// #include "logic_bridge.h"
+
+// #include <dlfcn.h>
+
+#include "../interact/cpp_export.h"
+
 */
 import "C"
-import (
-	"fmt"
-)
+import "unsafe"
 
 type SimpleUser struct {
 	areaid   int32
@@ -21,25 +20,39 @@ type SimpleUser struct {
 	nickname string
 }
 
-type Table interface {
-	get_tableid() int32
-	get_gameid() int32
-	get_chairs() int32
+type SimpleTable struct {
+	tableid int32
 }
 
-// //export ISimpleUser_get_areaidv2
-// func (u *SimpleUser) ISimpleUser_get_areaidv2() int32 {
-// 	return u.areaid
+func (t *SimpleTable) GetTableid() int32 {
+	return t.tableid
+}
+
+type User interface {
+	get_areaid() int32
+	get_numid() int32
+}
+
+// type Table struct {
+// 	get_tableid() int32
+// 	get_gameid() int32
+// 	get_chairs() int32
 // }
 
 //export ISimpleUser_get_areaid
-func ISimpleUser_get_areaid(p *C.void) int32 {
-	return 0
+func ISimpleUser_get_areaid(p User) int32 {
+	return p.get_areaid()
+}
+
+//export ISimpleUser_get_numid
+func ISimpleUser_get_numid(p User) int32 {
+	return p.get_numid()
 }
 
 //export ISimpleTable_get_tableid
-func ISimpleTable_get_tableid(t Table, p *C.void) int32 {
-	return 0
+func ISimpleTable_get_tableid(t *C.void) int32 {
+	//return t.GetTableid()
+	return (*SimpleTable)(unsafe.Pointer(t)).GetTableid()
 }
 
 // func ISimpleTable_get_gameid(p *C.void);
@@ -47,10 +60,27 @@ func ISimpleTable_get_tableid(t Table, p *C.void) int32 {
 // func ISimpleTable_get_user(p *C.void);
 
 func NewLogic() {
-	handle := C.dlopen(C.CString("libfoo.so"), C.RTLD_LAZY)
-	logic := C.dlsym(handle, C.CString("create_loigc"))
+	logic := C.ISimpleLogic_new()
 
-	fmt.Println(logic)
+	t := &SimpleTable{
+		tableid: 1234567,
+	}
+	rulestr := "config:hello world"
+	crulestr := C.CString(rulestr)
+	l := len(rulestr)
+	C.ISimpleLogic_on_create(logic, unsafe.Pointer(t), crulestr, C.int64_t(l))
+
+	C.ISimpleLogic_delete(logic)
+	// handle := C.dlopen(C.CString("libcpp_loigc.so"), C.RTLD_LAZY)
+	// logic := C.dlsym(handle, C.CString("create_loigc"))
+
+	// table := &SimpleTable{}
+
+	// rule := ""
+
+	// C.ISimpleLogic_on_create(logic, unsafe.Pointer(table), C._GoStringPtr(rule), c._GoStringLen(rule))
+
+	// fmt.Println(logic)
 }
 
 // //  ISimpleUser

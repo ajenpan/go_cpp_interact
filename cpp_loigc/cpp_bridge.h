@@ -1,9 +1,12 @@
-#ifndef __LOGIC_INTERFACE_H__
-#define __LOGIC_INTERFACE_H__
+#pragma once
 
 #include <string>
+#include "interact/cpp_export.h"
 
+class ISimpleUser;
 class ISimpleTable;
+class ISimpleLogic;
+
 class ISimpleUser
 {
 public:
@@ -47,13 +50,3 @@ public:
     virtual bool on_socket_message(ISimpleUser *user, int cmdid, int cmd_len, const char *buff) = 0;
     virtual bool on_destory() = 0;
 };
-
-// bool on_create(ISimpleTable* table, const std::string& gamerule);
-// bool on_reset(const std::string& gamerule);
-// bool on_user_enter(ISimpleUser* user, bool bcontinue);
-// bool on_user_leave(ISimpleUser* user, unsigned char leave_reason);
-// bool on_user_socketclose(ISimpleUser* user);
-// bool on_socket_message(ISimpleUser* user, int cmdid, int cmd_len, const char* buff);
-// bool on_destory();
-
-#endif
