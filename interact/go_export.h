@@ -26,13 +26,10 @@ typedef struct { const char *p; ptrdiff_t n; } _GoString_;
 
 
 
+// #include <dlfcn.h>
 
-// #cgo CFLAGS: -x c++
-// #cgo LDFLAGS: -lstdc++
+#include "../interact/cpp_export.h"
 
-#include <stdlib.h>
-#include <dlfcn.h>
-#include <stdbool.h>
 
 #line 1 "cgo-generated-wrapper"
 
@@ -86,7 +83,7 @@ extern "C" {
 
 extern GoInt32 ISimpleUser_get_areaid(GoInterface p);
 extern GoInt32 ISimpleUser_get_numid(GoInterface p);
-extern GoInt32 ISimpleTable_get_tableid(GoInterface t);
+extern GoInt32 ISimpleTable_get_tableid(void* t);
 
 #ifdef __cplusplus
 }

@@ -15,6 +15,7 @@ add_compile_options(-D_EXPORTING)
 add_library(${AppName} SHARED ${SRC_FILES})
 
 set_target_properties(${AppName} PROPERTIES CMAKE_POSITION_INDEPENDENT_CODE ON)
+set_target_properties(${AppName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/../go_exe)
 
 target_include_directories(${AppName} PRIVATE
     ${CMAKE_SOURCE_DIR}

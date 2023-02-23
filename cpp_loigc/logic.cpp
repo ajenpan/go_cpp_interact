@@ -13,10 +13,12 @@ GameLogic::~GameLogic()
     logtrace();
 }
 
-bool GameLogic::on_create(ISimpleTable *table, const std::string &gamerule)
+bool GameLogic::on_create(GoTablePtr table, const std::string &gamerule)
 {
     // std::cout << __FUNCTION__ << ",table=" << table << ",tableid=" << table->get_tableid() << ",gamerule=" << gamerule << std::endl;
     logtrace();
+
+    std::cout<<"tableid is "<< table->get_tableid()<<std::endl;
 
     table_ = table;
     gamerule_ = gamerule;

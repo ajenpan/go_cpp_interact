@@ -23,7 +23,11 @@ extern "C"
 
     bool ISimpleLogic_on_create(Logic *p, Table *table, const char *gamerule, int64_t len)
     {
-        return CAST_LOGIC(p)->on_create(CAST_TABLE(table), std::string(gamerule, len));
+        std::cout << table << std::endl;
+        auto pGoTable = std::make_shared<GoTable>(table);
+        std::cout << pGoTable->get_tableid() << std::endl;
+
+        return CAST_LOGIC(p)->on_create(pGoTable, std::string(gamerule, len));
     }
     bool ISimpleLogic_on_reset(Logic *p, const char *gamerule, int64_t len)
     {
@@ -52,3 +56,8 @@ extern "C"
 }
 // bool ISimpleUser_on_sitdown(ISimpleTable *table, unsigned short seat){}
 // bool ISimpleUser_on_standup(){}
+
+int32_t GoTable::get_tableid()
+{
+    return ISimpleTable_get_tableid(impl);
+}

@@ -14,7 +14,7 @@ public:
     ~GameLogic();
 
 public:
-    bool on_create(ISimpleTable *table, const std::string &gamerule);
+    bool on_create(GoTablePtr table, const std::string &gamerule);
     bool on_reset(const std::string &gamerule);
     bool on_user_enter(ISimpleUser *user, bool bcontinue);
     bool on_user_leave(ISimpleUser *user, unsigned char leave_reason);
@@ -26,7 +26,7 @@ protected:
     ISimpleUser *find_user(int areaid, int numid);
 
 protected:
-    ISimpleTable *table_ = nullptr;
+    GoTablePtr table_ = nullptr;
     std::string gamerule_ = "";
     std::map<long long, ISimpleUser *> player_list_;
 };

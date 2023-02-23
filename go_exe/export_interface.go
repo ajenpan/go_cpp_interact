@@ -3,7 +3,7 @@ package main
 /*
 #cgo CFLAGS: -I${SRCDIR}/../interact
 #cgo LDFLAGS: -Wl,-rpath,${SRCDIR}
-#cgo LDFLAGS: -L${SRCDIR} -l:libcpp_loigc.so
+#cgo LDFLAGS: -L${SRCDIR} -lcpp_loigc
 
 
 // #include <dlfcn.h>
@@ -12,7 +12,10 @@ package main
 
 */
 import "C"
-import "unsafe"
+import (
+	"fmt"
+	"unsafe"
+)
 
 type SimpleUser struct {
 	areaid   int32
@@ -50,9 +53,11 @@ func ISimpleUser_get_numid(p User) int32 {
 }
 
 //export ISimpleTable_get_tableid
-func ISimpleTable_get_tableid(t *C.void) int32 {
-	//return t.GetTableid()
-	return (*SimpleTable)(unsafe.Pointer(t)).GetTableid()
+func ISimpleTable_get_tableid(t unsafe.Pointer) int32 {
+	fmt.Printf("%v\n", t)
+	return (*SimpleTable)(t).GetTableid()
+	// (*SimpleTable)(t)
+	// return 1111
 }
 
 // func ISimpleTable_get_gameid(p *C.void);
@@ -67,9 +72,8 @@ func NewLogic() {
 	}
 	rulestr := "config:hello world"
 	crulestr := C.CString(rulestr)
-	l := len(rulestr)
-	C.ISimpleLogic_on_create(logic, unsafe.Pointer(t), crulestr, C.int64_t(l))
 
+	C.ISimpleLogic_on_create(logic, unsafe.Pointer(t), crulestr, C.int64_t(len(rulestr)))
 	C.ISimpleLogic_delete(logic)
 	// handle := C.dlopen(C.CString("libcpp_loigc.so"), C.RTLD_LAZY)
 	// logic := C.dlsym(handle, C.CString("create_loigc"))

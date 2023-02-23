@@ -30,7 +30,6 @@ extern "C"
 
     // // ISimpleTable
 
-    // API_PUBLIC int32_t ISimpleTable_get_tableid(ISimpleTable *p);
     // API_PUBLIC int32_t ISimpleTable_get_gameid(ISimpleTable *p);
     // API_PUBLIC int32_t ISimpleTable_get_chairs(ISimpleTable *p);
     // API_PUBLIC User *ISimpleTable_get_user(ISimpleTable *p, unsigned short seat);
@@ -46,6 +45,8 @@ extern "C"
     typedef void Table;
     typedef void User;
     typedef void Logic;
+
+    extern int32_t ISimpleTable_get_tableid(Table *p);
 
     // need to impl in logic lib
     API_PUBLIC Logic *ISimpleLogic_new();
